@@ -1,0 +1,8 @@
+# Create a VM with cloud-init
+az vm create \
+  --resource-group app-grp \
+  --name app-vm \
+  --image Ubuntu2404 \
+  --admin-username azureuser \
+  --admin-password 'P@ssw0rd1234' \
+  --custom-data cloud-init.txt
