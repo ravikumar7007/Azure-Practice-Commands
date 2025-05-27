@@ -1,0 +1,41 @@
+# Create a quick VM
+az vm create \
+  --resource-group app-grp \
+  --name app-vm \
+  --image Win2022Datacenter \
+  --admin-username azureuser
+
+# List available images
+az vm image list --output table
+
+# Create a VM with details
+az vm create \
+  --resource-group app-grp \
+  --name app-vm \
+  --image Win2022Datacenter \
+  --admin-username azureuser \
+  --size Standard_DS2_v2 \
+  --vnet-name app-vnet \
+  --subnet app-subnet
+
+# Create a data disk
+az disk create \
+  --resource-group app-grp \
+  --name app-disk \
+  --size-gb 16 \
+  --location eastus
+
+# Attach the data disk to the VM
+az vm disk attach \
+  --resource-group app-grp \
+  --vm-name app-vm \
+  --name app-disk \
+  --lun 0
+
+# Create a VM scale set
+az vmss create \
+  --resource-group app-grp \
+  --name app-vmss \
+  --image Win2022Datacenter \
+  --admin-username azureuser \
+  --sku Standard_DS2_v2
