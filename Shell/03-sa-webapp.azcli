@@ -1,0 +1,22 @@
+# Create a storage account
+az storage account create \
+  --name appstorage \
+  --resource-group app-grp \
+  --location eastus \
+  --sku Standard_LRS \
+  --kind StorageV2
+
+# Create an App Service plan (Linux)
+az appservice plan create \
+  --name appserviceplan \
+  --resource-group app-grp \
+  --location eastus \
+  --sku S1 \
+  --is-linux true
+
+# Create a Java 17 web app on Linux
+az webapp create \
+  --name appweb \
+  --resource-group app-grp \
+  --plan appserviceplan \
+  --runtime "JAVA|JavaSE|17"
