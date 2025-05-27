@@ -1,0 +1,25 @@
+location = "East US"
+resource group = "app-grp"
+vnetName = "app-vnet"
+subnetName = "app-subnet"
+
+
+# create the resource group
+
+az group create --name $resourceGroup --location $location
+
+
+# create the virtual network
+
+az network vnet create \
+  --resource-group $resourceGroup \
+  --name $vnetName \
+  --location $location \
+  --address-prefix 10.0.0/16 \
+  --subnet-name $subnetName
+
+az network vnet subnet create \
+  --resource-group $resourceGroup \
+  --vnet-name $vnetName \
+  --name $subnetName \
+  --address-prefix 10.0.1.0/24
