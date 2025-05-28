@@ -1,0 +1,44 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.35.1.17967",
+      "templateHash": "9344009261153606621"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2019-11-01",
+      "name": "name",
+      "location": "[parameters('location')]",
+      "properties": {
+        "copy": [
+          {
+            "name": "subnets",
+            "count": "[length(range(1, 3))]",
+            "input": {
+              "name": "[format('Subnet{0}', range(1, 3)[copyIndex('subnets')])]",
+              "properties": {
+                "addressPrefix": "[cidrSubnet('10.0.0.0', 24, range(1, 3)[copyIndex('subnets')])]"
+              }
+            }
+          }
+        ],
+        "addressSpace": {
+          "addressPrefixes": [
+            "[cidrHost('10.0.0.0', 16)]"
+          ]
+        }
+      }
+    }
+  ]
+}
