@@ -1,0 +1,86 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {},
+  "functions": [],
+  "variables": {},
+  "resources": [
+    {
+      "name": "virtualNetwork1",
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2024-03-01",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "virtualNetwork1"
+      },
+
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "10.0.0.0/16"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "Subnet-1",
+            "properties": {
+              "addressPrefix": "10.0.0.0/24"
+
+            }
+          },
+          {
+            "name": "AzureBastionSubnet",
+            "properties": {
+              "addressPrefix": "10.0.1.0/24"
+
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "bastion-ip",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2024-03-01",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "bastion-ip"
+      },
+      "sku": {
+        "name": "Standard"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Static"
+      }
+    },
+    {
+      "name": "bastion-host",
+      "type": "Microsoft.Network/bastionHosts",
+      "apiVersion": "2024-03-01",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "bastion-host"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', 'virtualNetwork1')]",
+        "[resourceId('Microsoft.Network/publicIPAddresses', 'bastion-ip')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "bastionIpConfig",
+            "properties": {
+              "subnet": {
+                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'virtualNetwork1'), '/subnets/AzureBastionSubnet')]"
+              },
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'bastion-ip')]"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": {}
+}
