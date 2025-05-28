@@ -1,7 +1,14 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
-  "parameters": {},
+  "parameters": {
+    "vmpassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Add password for the VM admin user."
+      }
+    }
+  },
   "functions": [],
   "variables": {},
   "resources": [
@@ -148,7 +155,7 @@
         "osProfile": {
           "computerName": "app-vm",
           "adminUsername": "app_user",
-          "adminPassword": "P@ssw0rd1234"
+          "adminPassword": "[parameters('vmpassword')]"
         },
         "storageProfile": {
           "imageReference": {
