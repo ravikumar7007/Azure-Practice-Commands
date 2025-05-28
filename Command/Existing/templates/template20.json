@@ -62,15 +62,15 @@
                             "subnet": {
                                 "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'appnetwork', 'SubnetA')]"
                             },
-                            "publicIPAddress":{
-                                "id":"[resourceId('Microsoft.Network/publicIPAddresses','app-ip')]"
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses','app-ip')]"
                             }
                         }
                     }
-                    
+
                 ],
                 "networkSecurityGroup": {
-                    "id":"[resourceId('Microsoft.Network/networkSecurityGroups','app-nsg')]"
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups','app-nsg')]"
                 }
             }
         },
@@ -123,74 +123,74 @@
             }
         },
         {
-    "name": "[concat('appvm','/config-app')]",
-    "type": "Microsoft.Compute/virtualMachines/extensions",
-    "apiVersion": "2021-04-01",
-    "location": "[resourceGroup().location]",
-    "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachines', 'appvm')]"
-    ],
-    "properties": {
-        "publisher": "Microsoft.Compute",
-        "type": "CustomScriptExtension",
-        "typeHandlerVersion": "1.7",
-        "autoUpgradeMinorVersion": true,
-        "settings": {
-            "fileUris": [
-                "https://appstore554553443.blob.core.windows.net/scripts/IIS.ps1?sp=r&st=2024-08-29T05:33:09Z&se=2024-08-29T13:33:09Z&spr=https&sv=2022-11-02&sr=b&sig=ZKNg5Pp3E%2F0yof1bOGLMQKeteVxpMzJ420IYOcFeKrI%3D"
-            ]
-        },
-        "protectedSettings": {
-            "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File IIS.ps1"
-        }
-    }
-  },
-        {
-    "name": "appvm",
-    "type": "Microsoft.Compute/virtualMachines",
-    "apiVersion": "2024-07-01",
-    "location": "[resourceGroup().location]",
-    "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', toLower('vmstore4434434556'))]",
-        "[resourceId('Microsoft.Network/networkInterfaces', 'app-interface')]"
-    ],
-    "properties": {
-        "hardwareProfile": {
-            "vmSize": "Standard_D2s_v3"
-        },
-        "osProfile": {
-            "computerName": "appvm",
-            "adminUsername": "appusr",
-            "adminPassword": "Azure@123"
-        },
-        "storageProfile": {
-            "imageReference": {
-                "publisher": "MicrosoftWindowsServer",
-                "offer": "WindowsServer",
-                "sku": "2022-Datacenter",
-                "version": "latest"
-            },
-            "osDisk": {
-                "name": "windowsVM1OSDisk",
-                "caching": "ReadWrite",
-                "createOption": "FromImage"
-            }
-        },
-        "networkProfile": {
-            "networkInterfaces": [
-                {
-                    "id": "[resourceId('Microsoft.Network/networkInterfaces', 'app-interface')]"
+            "name": "[concat('appvm','/config-app')]",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2021-04-01",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', 'appvm')]"
+            ],
+            "properties": {
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.7",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": [
+                        "https://appstore554553443.blob.core.windows.net/scripts/IIS.ps1?sp=r&st=2024-08-29T05:33:09Z&se=2024-08-29T13:33:09Z&spr=https&sv=2022-11-02&sr=b&sig=ZKNg5Pp3E%2F0yof1bOGLMQKeteVxpMzJ420IYOcFeKrI%3D"
+                    ]
+                },
+                "protectedSettings": {
+                    "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File IIS.ps1"
                 }
-            ]
+            }
         },
-        "diagnosticsProfile": {
-            "bootDiagnostics": {
-                "enabled": true,
-                "storageUri": "[reference(resourceId('Microsoft.Storage/storageAccounts', toLower('vmstore4434434556')), '2023-01-01').primaryEndpoints.blob]"
+        {
+            "name": "appvm",
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2024-07-01",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', toLower('vmstore4434434556'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', 'app-interface')]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_D2s_v3"
+                },
+                "osProfile": {
+                    "computerName": "appvm",
+                    "adminUsername": "appusr",
+                    "adminPassword": "Azure@123"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2022-Datacenter",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "windowsVM1OSDisk",
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', 'app-interface')]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "[reference(resourceId('Microsoft.Storage/storageAccounts', toLower('vmstore4434434556')), '2023-01-01').primaryEndpoints.blob]"
+                    }
+                }
             }
         }
-    }
-}
     ],
     "outputs": {}
 }
