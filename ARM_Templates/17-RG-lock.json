@@ -1,0 +1,49 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {},
+  "functions": [],
+  "variables": {},
+  "resources": [
+    {
+      "name": "app-rg",
+      "type": "Microsoft.Resources/resourceGroups",
+      "apiVersion": "2024-08-01",
+      "location": "eastus"
+    },
+    {
+      "name": "nestedDeployment1",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2024-07-01",
+      "resourceGroup": "app-rg",
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/resourceGroups', 'app-rg')]"
+      ],
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {},
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {},
+          "variables": {},
+          "resources": [
+            {
+              "type": "Microsoft.Authorization/locks",
+              "apiVersion": "2020-05-01",
+              "name": "app-rg-lock",
+              "properties": {
+                "level": "ReadOnly"
+              }
+            }
+          ],
+          "outputs": {}
+        }
+      }
+    }
+  ],
+  "outputs": {}
+}
