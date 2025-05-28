@@ -1,14 +1,18 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
-  "parameters": {},
-  "functions": [],
-  "variables": {},
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.35.1.17967",
+      "templateHash": "14552566603031295653"
+    }
+  },
   "resources": [
     {
-      "name": "mystorageacc3739898842",
       "type": "Microsoft.Storage/storageAccounts",
       "apiVersion": "2023-05-01",
+      "name": "mystorageacc3739898842",
       "tags": {
         "displayName": "mystorageacc3739898842"
       },
@@ -18,6 +22,5 @@
         "name": "Standard_LRS"
       }
     }
-  ],
-  "outputs": {}
+  ]
 }
