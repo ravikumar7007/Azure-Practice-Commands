@@ -2,7 +2,7 @@
 param location string
 
 var vnetName = 'myVNet'
-var subnetPrefix = '10.0.0.0/16'
+var vnetPrefix = '10.0.0.0/16'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2019-11-01' = {
   name: vnetName
@@ -10,21 +10,19 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2019-11-01' = {
   properties: {
     addressSpace: {
       addressPrefixes: [
-        cidrHost(subnetPrefix, 16)
+        cidrHost(vnetPrefix, 16)
       ]
     }
     subnets: [
-      for i in range(1, 3): {
-        name: 'Subnet${i}'
+      {
+        name: 'SubnetA'
         properties: {
-          addressPrefix: cidrSubnet(subnetPrefix, 24, i)
+          addressPrefix: cidrSubnet(vnetPrefix, 24, 0)
         }
       }
     ]
   }
 }
-
-output subnetRange array = [for i in range(1, 3): cidrSubnet(subnetPrefix, 24, i)]
 
 resource publicIPAddress 'Microsoft.Network/publicIPAddresses@2019-11-01' = {
   name: 'app-pip'
